@@ -10,9 +10,41 @@
     <body>
 
     <!--Add a nav bar here -->
+    <header class="pb-5">
+        <nav class=" navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class=" navbar-brand" href="{% url 'djangoapp:index' %}">Best Dealer!</a>
+            {% if user.is_authenticated %}
+            <div class="ml-auto">
+                <a class="h6 mr-2 text-light">Welcome, {{user.username}}</a>
+                <a class="btn btn-outline-danger btn-sm" type="button" href="{% url 'djangoapp:logout' %}">Logout</a>
+            </div> 
+            {% else %}
+            <form action="{% url 'djangoapp:login' %}"  method="post" class="ml-auto">
+                {% csrf_token %}<!--Important do not touch-->
+                <input class="" type="text" id="username" name="username" placeholder="UserName:">
+                <input type="password" id="pword" name="pword" placeholder="Password:">
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Login">
+                <a class="btn btn-outline-warning btn-sm" type="submit" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+            </form>
+            {% endif %}
+        </nav>
+    </head>
 
     <!-- Add reviews as cards -->
-
+    <main class="container" style="padding: 3%;">
+        <div class="card-columns">
+            {% for review in reviews %}
+                <div class="card" style="height: 300px; overflow: scroll; overflow-x: hidden;">
+                    <img src="{{MEDIA_URL}}/emoji/{{review.sentiment}}.png" class="card-img-center" style="height: 100px; width: 100px; margin-left: 35%; margin-bottom: 5%; margin-top: 2%;">
+                    <div class="card-body" style="text-align: center;">
+                        <h5 class="card-title">{{ review.car_make }}, {{ review.car_model }}</h5>
+                        <h5 class="card-title">{{ review.car_year }}</h5>
+                        <p class="card-text">{{ review.review }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
     </body>
 
 </html>
