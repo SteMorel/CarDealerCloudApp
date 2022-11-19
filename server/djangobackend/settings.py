@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import environ
 import os
 from pathlib import Path
 
@@ -16,18 +17,25 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ao5z(o(z@cvzodm99d32jkxa5e8a1!q_4sqss5-a%n6tg$#h$+'
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+SECRET_KEY  = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 APPEND_SLASH = True
 
-ALLOWED_HOSTS = ["localhost"]
+#ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
+# <HINT> add your cloud host here
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -77,12 +85,23 @@ WSGI_APPLICATION = 'djangobackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+#DATABASES = {'default': env.db('DATABASE_URL')}
+
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# DATABASES = {
+#   'default': {
+#   'ENGINE'   : 'django.db.backends.sqlite3',
+#   'NAME'     : 'Cloudant-swa',
+#   'USER'     : '7a06344-919b-4c8d-b699-4cdfa903650b-bluemix',
+#   'PASSWORD' : '7Vja0b7v-zsWBzFUFJw172VhpPJCfY_s8aIPRtPAbhSQ',
+#   'HOST'     : '17a06344-919b-4c8d-b699-4cdfa903650b-bluemix.cloudantnosqldb.appdomain.cloud',
+#   }
+# }
 
 
 # Password validation
