@@ -108,7 +108,7 @@ def get_dealer_details(request, dealer_id):
     context = {}
     print(" DEALER ID: ", dealer_id)
     if request.method == "GET":
-        url = "https://eu-de.functions.appdomain.cloud/api/v1/web/31c7d35e-87ae-4a34-aa3f-52df941d1d68/API/review/"+dealer_id
+        url = "https://eu-de.functions.appdomain.cloud/api/v1/web/31c7d35e-87ae-4a34-aa3f-52df941d1d68/API/review?id={0}".format(dealer_id)
         context = {"reviews":  restapis.get_dealer_reviews_by_id_from_cf(url, dealer_id)}
         return render(request, 'djangoapp/dealer_details.html', context)
 
